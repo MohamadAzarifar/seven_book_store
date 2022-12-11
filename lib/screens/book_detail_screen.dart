@@ -20,11 +20,33 @@ class BookDetailScreen extends StatelessWidget {
                 _buildBookAuthor(),
                 _buildRating(),
                 Expanded(child: _buildDescription()),
+                _buildButton(),
               ],
             ),
           ),
         ),
       );
+
+  Widget _buildButton() {
+    return GestureDetector(
+      onTap: () {
+        print('Button clicked');
+      },
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(12),
+        ),
+        height: 50,
+        child: const Center(
+          child: Text(
+            'Add to Cart',
+            style: TextStyle(color: Colors.white),
+          ),
+        ),
+      ),
+    );
+  }
 
   Widget _buildDescription() {
     return const Padding(
