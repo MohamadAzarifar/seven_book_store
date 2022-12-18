@@ -88,6 +88,7 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
+//TODO: Make it one component
   Widget _buildBookImage() => Container(
         height: 300,
         width: 200,
