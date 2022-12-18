@@ -19,27 +19,28 @@ class BookExplorerScreen extends StatelessWidget {
                 ),
               ),
               Expanded(
-                child: ListView(
-                  children: [
-                    SizedBox(
-                      height: 200,
-                      child: Row(
-                        children: [
-                          _buildBookImage(),
-                          const SizedBox(width: 8),
-                          Expanded(
-                            child: _buildBookDetails(),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              ),
+                  child: ListView.builder(
+                      itemCount: 400,
+                      itemBuilder: (_, __) => _buildBookListItem())),
             ],
           ),
         ),
       );
+
+  Widget _buildBookListItem() {
+    return SizedBox(
+      height: 200,
+      child: Row(
+        children: [
+          _buildBookImage(),
+          const SizedBox(width: 8),
+          Expanded(
+            child: _buildBookDetails(),
+          ),
+        ],
+      ),
+    );
+  }
 
   Widget _buildBookDetails() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
