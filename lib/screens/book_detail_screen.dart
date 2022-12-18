@@ -8,6 +8,23 @@ class BookDetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => UIScaffold(
+        appBar: AppBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          actions: const [
+            Icon(
+              Icons.bookmark_outline,
+              color: Colors.black,
+            ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20),
+              child: Icon(
+                Icons.more_vert,
+                color: Colors.black,
+              ),
+            ),
+          ],
+        ),
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Column(
