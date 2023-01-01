@@ -4,12 +4,17 @@ import 'package:book_store/components/components.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class BookDetailScreen extends StatelessWidget {
-  const BookDetailScreen({super.key});
+  const BookDetailScreen({super.key, required this.bookId});
+
+  final int bookId;
 
   @override
   Widget build(BuildContext context) => UIScaffold(
         appBar: AppBar(
           backgroundColor: Colors.white,
+          iconTheme: const IconThemeData(
+            color: Colors.black, //change your color here
+          ),
           elevation: 0,
           actions: const [
             Icon(

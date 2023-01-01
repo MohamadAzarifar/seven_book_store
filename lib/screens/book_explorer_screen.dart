@@ -1,4 +1,5 @@
 import 'package:book_store/components/components.dart';
+import 'package:book_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class BookExplorerScreen extends StatelessWidget {
@@ -10,14 +11,14 @@ class BookExplorerScreen extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: ListView(
             children: [
-              _buildHorizontalList(),
-              _buildVerticalList(),
+              _buildHorizontalList(context),
+              _buildVerticalList(context),
             ],
           ),
         ),
       );
 
-  Column _buildHorizontalList() {
+  Column _buildHorizontalList(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -27,12 +28,12 @@ class BookExplorerScreen extends StatelessWidget {
           child: ListView(
             scrollDirection: Axis.horizontal,
             children: [
-              _buildHorizontalListItem(),
-              _buildHorizontalListItem(),
-              _buildHorizontalListItem(),
-              _buildHorizontalListItem(),
-              _buildHorizontalListItem(),
-              _buildHorizontalListItem(),
+              _buildHorizontalListItem(context),
+              _buildHorizontalListItem(context),
+              _buildHorizontalListItem(context),
+              _buildHorizontalListItem(context),
+              _buildHorizontalListItem(context),
+              _buildHorizontalListItem(context),
             ],
           ),
         )
@@ -40,7 +41,7 @@ class BookExplorerScreen extends StatelessWidget {
     );
   }
 
-  Column _buildVerticalList() {
+  Column _buildVerticalList(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,41 +56,59 @@ class BookExplorerScreen extends StatelessWidget {
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           itemCount: 400,
-          itemBuilder: (_, __) => _buildBookListItem(),
+          itemBuilder: (_, __) => _buildVerticalListItem(context),
         ),
       ],
     );
   }
 
-  SizedBox _buildHorizontalListItem() {
-    return SizedBox(
-      width: 150,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Container(
-            color: Colors.blue,
-            width: 120,
-            height: 150,
-          ),
-          const Text('Book Name'),
-          const Text('Auhor Name'),
-        ],
+  Widget _buildHorizontalListItem(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const BookDetailScreen(
+            bookId: 20,
+          );
+        }));
+      },
+      child: SizedBox(
+        width: 150,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              color: Colors.blue,
+              width: 120,
+              height: 150,
+            ),
+            const Text('Book Name'),
+            const Text('Auhor Name'),
+          ],
+        ),
       ),
     );
   }
 
-  Widget _buildBookListItem() {
-    return SizedBox(
-      height: 200,
-      child: Row(
-        children: [
-          _buildBookImage(),
-          const SizedBox(width: 8),
-          Expanded(
-            child: _buildBookDetails(),
-          ),
-        ],
+  Widget _buildVerticalListItem(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return const BookDetailScreen(
+            bookId: 100,
+          );
+        }));
+      },
+      child: SizedBox(
+        height: 200,
+        child: Row(
+          children: [
+            _buildBookImage(),
+            const SizedBox(width: 8),
+            Expanded(
+              child: _buildBookDetails(),
+            ),
+          ],
+        ),
       ),
     );
   }
