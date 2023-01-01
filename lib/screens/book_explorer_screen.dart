@@ -66,7 +66,7 @@ class BookExplorerScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const BookDetailScreen(
+          return BookDetailScreen(
             bookId: 20,
           );
         }));
@@ -93,7 +93,7 @@ class BookExplorerScreen extends StatelessWidget {
     return GestureDetector(
       onTap: () {
         Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return const BookDetailScreen(
+          return BookDetailScreen(
             bookId: 100,
           );
         }));

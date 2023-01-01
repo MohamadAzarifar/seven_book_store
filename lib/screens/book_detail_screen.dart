@@ -3,10 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:book_store/components/components.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class BookDetailScreen extends StatelessWidget {
+class BookDetailScreen extends StatefulWidget {
   const BookDetailScreen({super.key, required this.bookId});
 
   final int bookId;
+
+  @override
+  State<BookDetailScreen> createState() => _BookDetailScreenState();
+}
+
+class _BookDetailScreenState extends State<BookDetailScreen> {
+  bool isBookmarked = true;
 
   @override
   Widget build(BuildContext context) => UIScaffold(
@@ -16,12 +23,19 @@ class BookDetailScreen extends StatelessWidget {
             color: Colors.black, //change your color here
           ),
           elevation: 0,
-          actions: const [
-            Icon(
-              Icons.bookmark_outline,
-              color: Colors.black,
+          actions: [
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  isBookmarked = !isBookmarked;
+                });
+              },
+              child: Icon(
+                isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+                color: Colors.black,
+              ),
             ),
-            Padding(
+            const Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Icon(
                 Icons.more_vert,
