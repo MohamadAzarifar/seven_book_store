@@ -8,24 +8,76 @@ class BookExplorerScreen extends StatelessWidget {
   Widget build(BuildContext context) => UIScaffold(
         body: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: ListView(
             children: [
-              const Text(
-                'Newest',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 20,
-                ),
-              ),
-              Expanded(
-                  child: ListView.builder(
-                      itemCount: 400,
-                      itemBuilder: (_, __) => _buildBookListItem())),
+              _buildHorizontalList(),
+              _buildVerticalList(),
             ],
           ),
         ),
       );
+
+  Column _buildHorizontalList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text('Popular Books'),
+        SizedBox(
+          height: 200,
+          child: ListView(
+            scrollDirection: Axis.horizontal,
+            children: [
+              _buildHorizontalListItem(),
+              _buildHorizontalListItem(),
+              _buildHorizontalListItem(),
+              _buildHorizontalListItem(),
+              _buildHorizontalListItem(),
+              _buildHorizontalListItem(),
+            ],
+          ),
+        )
+      ],
+    );
+  }
+
+  Column _buildVerticalList() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          'Newest',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+        ListView.builder(
+          shrinkWrap: true,
+          physics: const NeverScrollableScrollPhysics(),
+          itemCount: 400,
+          itemBuilder: (_, __) => _buildBookListItem(),
+        ),
+      ],
+    );
+  }
+
+  SizedBox _buildHorizontalListItem() {
+    return SizedBox(
+      width: 150,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            color: Colors.blue,
+            width: 120,
+            height: 150,
+          ),
+          const Text('Book Name'),
+          const Text('Auhor Name'),
+        ],
+      ),
+    );
+  }
 
   Widget _buildBookListItem() {
     return SizedBox(
