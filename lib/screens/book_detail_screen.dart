@@ -3,17 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:book_store/components/components.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
-class BookDetailScreen extends StatefulWidget {
+class BookDetailScreen extends StatelessWidget {
   const BookDetailScreen({super.key, required this.bookId});
 
   final int bookId;
-
-  @override
-  State<BookDetailScreen> createState() => _BookDetailScreenState();
-}
-
-class _BookDetailScreenState extends State<BookDetailScreen> {
-  bool isBookmarked = true;
 
   @override
   Widget build(BuildContext context) => UIScaffold(
@@ -23,19 +16,9 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
             color: Colors.black, //change your color here
           ),
           elevation: 0,
-          actions: [
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isBookmarked = !isBookmarked;
-                });
-              },
-              child: Icon(
-                isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
-                color: Colors.black,
-              ),
-            ),
-            const Padding(
+          actions: const [
+            BookmarkButton(),
+            Padding(
               padding: EdgeInsets.symmetric(horizontal: 20),
               child: Icon(
                 Icons.more_vert,
@@ -167,4 +150,29 @@ class _BookDetailScreenState extends State<BookDetailScreen> {
           ),
         ],
       );
+}
+
+class BookmarkButton extends StatefulWidget {
+  const BookmarkButton({super.key});
+
+  @override
+  State<BookmarkButton> createState() => _BookmarkButtonState();
+}
+
+class _BookmarkButtonState extends State<BookmarkButton> {
+  bool isBookmarked = false;
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          isBookmarked = !isBookmarked;
+        });
+      },
+      child: Icon(
+        isBookmarked ? Icons.bookmark : Icons.bookmark_outline,
+        color: Colors.black,
+      ),
+    );
+  }
 }
