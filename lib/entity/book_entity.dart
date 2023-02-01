@@ -4,58 +4,45 @@ import 'package:book_store/entity/author_entity.dart';
 import 'package:book_store/entity/url_entity.dart';
 
 class BookEntity {
-  final String name;
-  final AuthorEntity author;
-  final UrlEntity url;
+  final int id;
+  final String title;
+  final String description;
+  final String author;
+  final DateTime releaseDate;
+  final String imagePath;
   final double rating;
+  final String text;
 
   BookEntity({
-    required this.name,
+    required this.id,
+    required this.title,
+    required this.description,
     required this.author,
-    required this.url,
+    required this.releaseDate,
+    required this.imagePath,
     required this.rating,
+    required this.text,
   });
-
-  BookEntity copyWith({
-    String? name,
-    AuthorEntity? author,
-    UrlEntity? url,
-    double? rating,
-  }) {
-    return BookEntity(
-      name: name ?? this.name,
-      author: author ?? this.author,
-      url: url ?? this.url,
-      rating: rating ?? this.rating,
-    );
-  }
-
-  Map<String, dynamic> toMap() {
-    return {
-      'name': name,
-      'author': author.toMap(),
-      'url': url.toMap(),
-      'rating': rating,
-    };
-  }
 
   factory BookEntity.fromMap(Map<String, dynamic> map) {
     return BookEntity(
-      name: map['name'] ?? '',
-      author: AuthorEntity.fromMap(map['author']),
-      url: UrlEntity.fromMap(map['url']),
-      rating: map['rating']?.toInt() ?? 0,
+      id: map['id']?.toInt() ?? 0,
+      title: map['title'] ?? '',
+      description: map['shortDescription'] ?? '',
+      author: map['authorName'] ?? '',
+      releaseDate: DateTime.parse(map['releaseDate']),
+      imagePath: map['imageURL'] ?? '',
+      rating: map['rating']?.toDouble() ?? 0.0,
+      text: map['text'] ?? '',
     );
   }
-
-  String toJson() => json.encode(toMap());
 
   factory BookEntity.fromJson(String source) =>
       BookEntity.fromMap(json.decode(source));
 
   @override
   String toString() {
-    return 'BookEntity(name: $name, author: $author, url: $url, rating: $rating)';
+    return 'BookEntity(id: $id, title: $title, description: $description, author: $author, releaseDate: $releaseDate, imagePath: $imagePath, rating: $rating, text: $text)';
   }
 
   @override
@@ -63,14 +50,25 @@ class BookEntity {
     if (identical(this, other)) return true;
 
     return other is BookEntity &&
-        other.name == name &&
+        other.id == id &&
+        other.title == title &&
+        other.description == description &&
         other.author == author &&
-        other.url == url &&
-        other.rating == rating;
+        other.releaseDate == releaseDate &&
+        other.imagePath == imagePath &&
+        other.rating == rating &&
+        other.text == text;
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^ author.hashCode ^ url.hashCode ^ rating.hashCode;
+    return id.hashCode ^
+        title.hashCode ^
+        description.hashCode ^
+        author.hashCode ^
+        releaseDate.hashCode ^
+        imagePath.hashCode ^
+        rating.hashCode ^
+        text.hashCode;
   }
 }

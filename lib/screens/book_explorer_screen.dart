@@ -1,4 +1,5 @@
 import 'package:book_store/components/components.dart';
+import 'package:book_store/datasource/api/book_apis.dart';
 import 'package:book_store/entity/author_entity.dart';
 import 'package:book_store/entity/book_entity.dart';
 import 'package:book_store/entity/url_entity.dart';
@@ -6,35 +7,37 @@ import 'package:book_store/screens/screens.dart';
 import 'package:flutter/material.dart';
 
 class BookExplorerScreen extends StatelessWidget {
-  BookExplorerScreen({super.key});
-
-  final books = List.generate(
-    30,
-    (index) => BookEntity(
-      name: 'My Book $index',
-      author: AuthorEntity(
-          firstName: 'FirstName',
-          lastName: 'LastName',
-          nationalCode: '0012334522'),
-      url: UrlEntity(path: 'www.adress.com'),
-      rating: 2,
-    ),
-  );
+  const BookExplorerScreen({super.key});
 
   @override
   Widget build(BuildContext context) => UIScaffold(
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: ListView(
-            children: [
-              _buildHorizontalList(context),
-              _buildVerticalList(context),
-            ],
-          ),
+        body: FutureBuilder(
+          future: BookApis().fetchBooks(),
+          builder: (context, snapshot) {
+            if (snapshot.hasData) {
+              final books = snapshot.data!;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: ListView(
+                  children: [
+                    _buildHorizontalList(context, books),
+                    _buildVerticalList(context, books),
+                  ],
+                ),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(snapshot.error.toString()),
+              );
+            }
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
         ),
       );
 
-  Column _buildHorizontalList(BuildContext context) {
+  Column _buildHorizontalList(BuildContext context, List<BookEntity> books) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -52,7 +55,7 @@ class BookExplorerScreen extends StatelessWidget {
     );
   }
 
-  Column _buildVerticalList(BuildContext context) {
+  Column _buildVerticalList(BuildContext context, List<BookEntity> books) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -93,8 +96,8 @@ class BookExplorerScreen extends StatelessWidget {
               width: 120,
               height: 150,
             ),
-            Text(book.name),
-            Text('${book.author.firstName} ${book.author.lastName}'),
+            Text(book.title),
+            Text(book.author),
           ],
         ),
       ),
@@ -132,7 +135,7 @@ class BookExplorerScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(book.name),
+              Text(book.title),
               const Icon(
                 Icons.bookmark_outline,
                 color: Colors.black,
@@ -141,7 +144,7 @@ class BookExplorerScreen extends StatelessWidget {
           ),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
-            child: Text(book.author.firstName),
+            child: Text(book.author),
           ),
           UIRatingBar(
             rating: book.rating,

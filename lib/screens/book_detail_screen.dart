@@ -1,4 +1,3 @@
-import 'package:book_store/entity/author_entity.dart';
 import 'package:book_store/entity/book_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -38,7 +37,7 @@ class BookDetailScreen extends StatelessWidget {
                     children: [
                       const SizedBox(height: 60),
                       _buildBookImage(),
-                      _buildBookName(book.name),
+                      _buildBookName(book.title),
                       _buildBookAuthor(book.author),
                       _buildRating(book.rating),
                       _buildDescription()
@@ -106,10 +105,10 @@ class BookDetailScreen extends StatelessWidget {
         ),
       );
 
-  Widget _buildBookAuthor(AuthorEntity author) => Padding(
+  Widget _buildBookAuthor(String author) => Padding(
         padding: const EdgeInsets.only(bottom: 20),
         child: Text(
-          author.firstName,
+          author,
           style: const TextStyle(
             color: Colors.grey,
             letterSpacing: 3,
