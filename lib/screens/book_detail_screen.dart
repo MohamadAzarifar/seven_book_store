@@ -1,3 +1,4 @@
+import 'package:book_store/datasource/api/book_apis.dart';
 import 'package:book_store/entity/book_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -27,28 +28,42 @@ class BookDetailScreen extends StatelessWidget {
             ),
           ],
         ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
+        body: FutureBuilder<BookEntity>(
+            future: BookApis().fetchBookDetail(book.id),
+            builder: (context, snapshot) {
+              if (snapshot.hasData) {
+                final book = snapshot.data!;
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Column(
                     children: [
-                      const SizedBox(height: 60),
-                      _buildBookImage(),
-                      _buildBookName(book.title),
-                      _buildBookAuthor(book.author),
-                      _buildRating(book.rating),
-                      _buildDescription()
+                      Expanded(
+                        child: SingleChildScrollView(
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 60),
+                              _buildBookImage(book.id),
+                              _buildBookName(book.title),
+                              _buildBookAuthor(book.author),
+                              _buildRating(book.rating),
+                              _buildDescription(book.description)
+                            ],
+                          ),
+                        ),
+                      ),
+                      _buildButton(),
                     ],
                   ),
-                ),
-              ),
-              _buildButton(),
-            ],
-          ),
-        ),
+                );
+              } else if (snapshot.hasError) {
+                return Center(
+                  child: Text(snapshot.error.toString()),
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            }),
       );
 
   Widget _buildButton() {
@@ -72,15 +87,15 @@ class BookDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDescription() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 12),
+  Widget _buildDescription(String description) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: SizedBox(
         height: 300,
         child: SingleChildScrollView(
           child: Text(
-            'Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})Text(String data, {Key? key, TextStyle? style, StrutStyle? strutStyle, TextAlign? textAlign, TextDirection? textDirection, Locale? locale, bool? softWrap, TextOverflow? overflow, double? textScaleFactor, int? maxLines, String? semanticsLabel, TextWidthBasis? textWidthBasis, TextHeightBehavior? textHeightBehavior, Color? selectionColor})',
-            style: TextStyle(
+            description,
+            style: const TextStyle(
               color: Colors.grey,
             ),
             textAlign: TextAlign.justify,
@@ -91,10 +106,11 @@ class BookDetailScreen extends StatelessWidget {
   }
 
 //TODO: Make it one component
-  Widget _buildBookImage() => Container(
+  Widget _buildBookImage(int bookId) => Container(
         height: 300,
         width: 200,
-        color: Colors.blue,
+        child: Image.network(
+            'http://94.139.170.186:8081/api/v1/Image/GetImage?Url=5'),
       );
 
   Widget _buildBookName(String bookName) => Padding(
